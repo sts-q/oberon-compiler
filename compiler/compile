@@ -44,5 +44,5 @@ while [ $inSwitches -eq 1 ]; do
 done
 
 cd $BUILDDIR
-./oberon $OCFLAGS $1 | $PERR
+./oberon $OCFLAGS $1 | grep '^Err!'
 ./oberon $OCFLAGS $1 > out$EXT && $CC -g $CSTDFLAGS -Wall -Wextra -Wpedantic -Wno-unused-parameter -o out.prg out$EXT $EXTRA_CFLAGS
