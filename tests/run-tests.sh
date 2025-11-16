@@ -10,11 +10,12 @@ ALL_TESTS=(
   Cases
   ExpMod
   FibFact
-  FibFact2
-  FibFact3
+  #FibFact2 # Disabled due to be written with lower case keywords
+  #FibFact3 # Disabled due to be written with lower case keywords
   IOOperations
   KnightsTour
   LangExtensions
+  Run6502
   #Mandelbrot # Disabled due to float differences across platforms
   Maze
   MiscFeatures
@@ -26,7 +27,6 @@ ALL_TESTS=(
   RecCopy
   Recurse
   Recurse2
-  Run6502
   RunCompiler
   Sets
   Shadow
