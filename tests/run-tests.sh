@@ -10,12 +10,11 @@ ALL_TESTS=(
   Cases
   ExpMod
   FibFact
-  #FibFact2 # Disabled due to be written with lower case keywords
-  #FibFact3 # Disabled due to be written with lower case keywords
+  #FibFact2   # Disabled due to be written with upper case keywords
+  #FibFact3   # Disabled due to be written with upper case keywords
   IOOperations
   KnightsTour
   LangExtensions
-  Run6502
   #Mandelbrot # Disabled due to float differences across platforms
   Maze
   MiscFeatures
@@ -27,6 +26,7 @@ ALL_TESTS=(
   RecCopy
   Recurse
   Recurse2
+  Run6502
   RunCompiler
   Sets
   Shadow
@@ -61,25 +61,23 @@ for i in ${ALL_TESTS[@]}; do
   popd > /dev/null
   diff -c goldens/$i.output ../build/$i.output || fail $i
 done
+for i in ${ALL_TESTS[@]}; do
+  if [ $i = "LangExtensions" ]; then 
+    echo "Running RISC test $i... (Skipped)"
+    continue
+  fi
 
-# for i in ${ALL_TESTS[@]}; do
-#   if [ $i = "LangExtensions" ]; then 
-#     echo "Running RISC test $i... (Skipped)"
-#     continue
-#   fi
-
-#   echo "Running RISC test $i..."
-#   if [ $i = "RunCompiler" ]; then
-#     MEM_SIZE=362144 ../build/rcompile ${i}.ob
-#   else
-#     ../build/rcompile ${i}.ob
-#   fi
-#   pushd ../build > /dev/null
-#   ../build/out.prg < ../build/stdin.txt > ../build/$i.output
-#   popd > /dev/null
-#   diff -c goldens/$i.output ../build/$i.output || fail $i
-# done
-
+  echo "Running RISC test $i..."
+  if [ $i = "RunCompiler" ]; then
+    MEM_SIZE=362144 ../build/rcompile ${i}.ob
+  else
+    ../build/rcompile ${i}.ob
+  fi
+  pushd ../build > /dev/null
+  ../build/out.prg < ../build/stdin.txt > ../build/$i.output
+  popd > /dev/null
+  diff -c goldens/$i.output ../build/$i.output || fail $i
+done
 for i in ${ALL_TESTS[@]}; do
   echo "Running C++ test $i..."
   ../build/compile -cpp ${i}.ob
@@ -88,7 +86,6 @@ for i in ${ALL_TESTS[@]}; do
   popd > /dev/null
   diff -c goldens/$i.output ../build/$i.output || fail $i
 done
-
 for i in ${ALL_TESTS[@]}; do
   echo "Running test $i with bounds checking..."
   ../build/compile -bounds ${i}.ob
@@ -97,5 +94,4 @@ for i in ${ALL_TESTS[@]}; do
   popd > /dev/null
   diff -c goldens/$i.output ../build/$i.output || fail $i
 done
-
 echo "All tests passed!"
