@@ -44,9 +44,9 @@ $(BUILDDIR)/oberon0: risc_runner/runner.c risc_bootstrap/risc_code.txt
 clean:
 	rm -rf build
 
-# test: $(BUILDDIR)/oberonr
-#	cd tests/errors && ./run-fail-tests.sh
-#	cd tests && ./run-tests.sh
+test: $(BUILDDIR)/oberonr
+	cd tests/errors && ./run-fail-tests.sh
+	cd tests && ./run-tests.sh
 
 # compiler-test: $(BUILDDIR)/oberonr
 #	cd tests && ./compiler-test.sh
