@@ -1,11 +1,20 @@
 
 ## changelog-thisBranch.md
 
-### 2025-11-16 sts-q
+### 2025-11-16
 
-Building the compiler does not depend on Python and bash, anymore.
+Building the compiler and running the tests does not depend on Python, anymore.
 
-Running the tests still does.
+Skip tests that use lower case keywords.
+
+perr.py deleted.
+
+
+### 2025-11-15
+
+Default compiler to insist on upper case keywords. 
+(Lex.ob)
+
 
 ### END
 
