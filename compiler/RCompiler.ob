@@ -27,8 +27,8 @@ VAR
   fileName: ARRAY 256 OF CHAR;
   l: Lex.Lexer;
   p: Decls.ReachableDecl;
-  i: INTEGER;
   gotFile: BOOLEAN;
+  i: INTEGER;
 BEGIN
   (* Parse command line args *)
   i := 1;
