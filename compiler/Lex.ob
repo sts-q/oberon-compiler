@@ -130,8 +130,8 @@ TYPE
   END;
   Lexer* = RECORD
     sp: StringPool;
-    buf: ARRAY BufSize OF CHAR;
     fileName: PoolIndex;
+    buf: ARRAY BufSize OF CHAR;
     pos: INTEGER;
     t*: Token
   END;
