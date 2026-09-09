@@ -1199,6 +1199,7 @@ VAR
 BEGIN
   structSize := CalculateSize(e.lhs.typ);
   IF (structSize > 30) OR
+     AST.IsOpenArray(e.lhs.typ) OR
      AST.IsOpenArray(e.rhs.typ) OR
      (e.rhs.typ.kind = AST.typeString) THEN
     (* Loop based copy *)
@@ -1211,7 +1212,17 @@ BEGIN
       Emit(opCMPI, lengthItem.r, lengthItem.r, 0, structSize);
       Emit(opBRA, LINK, 0, opBGT, BOUNDS_TRAP)
     ELSE
-      Emit(opMOVI, curReg, 0, 0, structSize);
+      IF AST.IsOpenArray(e.lhs.typ) THEN
+        ASSERT(e.lhs.kind = AST.exprIdentRef);
+        ASSERT(e.lhs.decl # NIL);
+        ASSERT((e.lhs.decl.kind = AST.declVarParam) OR (e.lhs.decl.kind = AST.declParam));
+        ASSERT(e.lhs.decl.offset # -1);
+        (* Get the length parameter of the open array *)
+        Emit(opLDW, curReg, rSP, 0, stackOffset + e.lhs.decl.offset + 4);
+      ELSE
+        (* We know the size of the dest structure *)
+        Emit(opMOVI, curReg, 0, 0, structSize);
+      END;
       IncCurReg
     END;
     Emit(opLDW, curReg, rhs.r, 0, rhs.offset);

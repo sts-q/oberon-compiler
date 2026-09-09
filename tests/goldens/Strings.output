@@ -10,6 +10,8 @@ a=[ABCD]	b=[ABCDE]	<  <=    #
 a=[]		b=[ABCDEF]	<  <=    #        
 a=[ABCDEF]	b=[]		         #  >= >  
 a=[🟥🟩🟦]	b=[🟥🟦🟩]	         #  >= >  
+Hello
+Alpha Beta
 Hello, world!
 ABcDE
 abcde

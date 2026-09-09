@@ -22,6 +22,48 @@ MODULE Strings;
 
 IMPORT Out;
 
+TYPE StringBuilder = RECORD
+  buf: ARRAY 256 OF CHAR;
+  index: INTEGER;
+END;
+
+PROCEDURE SBWriteString(VAR sb: StringBuilder; s: ARRAY OF CHAR);
+VAR
+  i: INTEGER;
+BEGIN
+  i := 0;
+  WHILE s[i] # 0X DO
+    sb.buf[sb.index + i] := s[i];
+    INC(i)
+  END;
+  sb.index := sb.index + i
+END SBWriteString;
+
+PROCEDURE SBToBuf(VAR sb: StringBuilder; VAR s: ARRAY OF CHAR);
+BEGIN
+  sb.buf[sb.index] := 0X;
+  s := sb.buf;
+  sb.index := 0;
+END SBToBuf;
+
+PROCEDURE SBTest;
+VAR
+  buf: ARRAY 100 OF CHAR;
+  sb: StringBuilder;
+BEGIN
+  sb.index := 0;
+  SBWriteString(sb, "He");
+  SBWriteString(sb, "ll");
+  SBWriteString(sb, "o");
+  SBToBuf(sb, buf);
+  Out.Str(buf); Out.Ln;
+  SBWriteString(sb, "Alpha ");
+  SBWriteString(sb, "Beta");
+  SBToBuf(sb, buf);
+  Out.Str(buf); Out.Ln;
+  SBWriteString(sb, "Alpha ");
+END SBTest;
+
 PROCEDURE NumToWord(i: INTEGER);
 BEGIN
   IF i >= 1000000000 THEN
@@ -235,5 +277,6 @@ END Test;
 
 BEGIN
   Comparisons;
+  SBTest;
   Test
 END Strings.
