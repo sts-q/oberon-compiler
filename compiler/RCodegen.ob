@@ -1218,6 +1218,7 @@ BEGIN
         ASSERT((e.lhs.decl.kind = AST.declVarParam) OR (e.lhs.decl.kind = AST.declParam));
         ASSERT(e.lhs.decl.offset # -1);
         (* Get the length parameter of the open array *)
+        (* NOTE: This may be bigger than RHS, which means LHS will have extra junk *)
         Emit(opLDW, curReg, rSP, 0, stackOffset + e.lhs.decl.offset + 4);
       ELSE
         (* We know the size of the dest structure *)
