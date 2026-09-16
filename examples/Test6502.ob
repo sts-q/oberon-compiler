@@ -39,12 +39,11 @@ BEGIN
   mem[where] := CHR(what)
 END WriteMem;
 
-PROCEDURE ReadTestBinary;
+PROCEDURE RunTest(testName: ARRAY OF CHAR; successPc: INTEGER);
+VAR
+  steps: INTEGER;
 BEGIN
-  Out.ReadFile("6502_functional_test.bin", mem)
-END ReadTestBinary;
-
-BEGIN
+  Out.ReadFile(testName, mem);
   cpu.a := 0;
   cpu.x := 0;
   cpu.y := 0;
@@ -53,13 +52,24 @@ BEGIN
   cpu.flags := {M6502.reserveD};
   cpu.readProc := ReadMem;
   cpu.writeProc := WriteMem;
+  cpu.halt := FALSE;
   oldPc := 0;
-  ReadTestBinary;
-  WHILE oldPc # cpu.pc DO
+  steps := 0;
+  WHILE (oldPc # cpu.pc) & ~cpu.halt DO
+    INC(steps);
     oldPc := cpu.pc;
     M6502.Step(cpu)
   END;
   (* When the test completes, it goes into a tight loop. *)
   (* This represents the success ending PC.              *)
-  ASSERT(oldPc = 3469H)
+  ASSERT(oldPc = successPc);
+  Out.Str(testName);
+  Out.Str(" passed in ");
+  Out.Int(steps);
+  Out.Str(" steps");
+  Out.Ln
+END RunTest;
+
+BEGIN
+  RunTest("6502_functional_test.bin", 3469H);
 END Test6502.
